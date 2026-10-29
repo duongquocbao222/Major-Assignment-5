@@ -1,0 +1,19 @@
+KET QUA THUC NGHIEM ANN HAND GESTURE - DATASET MOI
+5 class * 20 anh goc = 100 anh goc
+5 class * 100 anh mau sau xoay = 500 anh JPG (chi xoay, chua xu ly)
+5 class * 100 anh sau xu ly = 500 anh binary
+Train=350 / Validation=75 / Test=75
+Best ANN: 7-7-5, eta=0.1, best epoch=200
+Validation CCE: 1.562163721
+Test Accuracy: 0.600000 (45/75)
+Macro Precision: 0.600000
+Macro Recall: 0.600000
+Macro F1: 0.557143
+Confusion matrix:
+[[15  0  0  0  0]
+ [ 0  5 10  0  0]
+ [ 5  0  0 10  0]
+ [ 0  0  0 10  5]
+ [ 0  0  0  0 15]]
+LUU Y: Khong dung Test de chon mo hinh. Ket qua thuoc dung phep chia voi seed 2026.
+Anh goc cung nguoi/goc may co the gan trung nhau, can them du lieu doc lap neu trien khai.

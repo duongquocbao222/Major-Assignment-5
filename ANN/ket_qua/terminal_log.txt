@@ -1,0 +1,235 @@
+ANN 7-H-5 | Hu Moments | Batch Gradient Descent | 200 epochs
+Tien xu ly: loc mau da + GrabCut phan biet tay va bong; khong dung HOG/CNN
+File Python: C:\VScode\AI\Major Assignment 5\ANN\main.py
+Thu muc dataset: C:\VScode\AI\Major Assignment 5\ANN\dataset
+So tep goc: 100
+SHA256 dataset: b14ce7c32e54adcc98c47b33cc5861f256ff78dd04254967b215f47c946f0ab0
+KIEM TRA DU LIEU: KHOP 100 anh goc tu dataset.zip
+Goc xoay: [0, 15, -15, 20, -20]
+
+================================================================================================
+BUOC 1 - KIEM TRA DU LIEU, CHIA ANH GOC, XOAY VA GAN ID
+================================================================================================
+cx = m10 / m00 ; cy = m01 / m00
+Goc theta: [0, 15, -15, 20, -20] => 20 anh goc * 5 goc = 100 anh/class
+Phat hien 18 nhom anh doc lap, kich thuoc: [2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+Kiem tra nhom anh gan trung chi nam trong mot tap: DAT
+
+Class 1 - thay so centroid, anh dau: 1793072332128_5246538256360569843_g3268398984776256103_7c5e9b3861486b23f23b0a8230e8b9bc.jpg
+m00=33311; m10=4410439.0000; m01=8108609.0000
+cx=4410439.0000/33311=132.401879
+cy=8108609.0000/33311=243.421362
+Vi du +15 do: cos15=0.965926; sin15=0.258819
+Diem P=(152.401879,253.421362), P sau xoay +15=(132.40188+20*cos15+10*sin15,243.42136-20*sin15+10*cos15)=(154.308586,247.904240)
+Class 1: da luu 100 anh MAU xoay rieng (khong nhi phan hoa)
+Class 1: 20 goc -> 100 anh nhị phân; IDs 001..100; Train=70, Val=15, Test=15
+Phat hien 12 nhom anh doc lap, kich thuoc: [5, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
+Kiem tra nhom anh gan trung chi nam trong mot tap: DAT
+Class 2: da luu 100 anh MAU xoay rieng (khong nhi phan hoa)
+Class 2: 20 goc -> 100 anh nhị phân; IDs 101..200; Train=70, Val=15, Test=15
+Phat hien 17 nhom anh doc lap, kich thuoc: [3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+Kiem tra nhom anh gan trung chi nam trong mot tap: DAT
+Class 3: da luu 100 anh MAU xoay rieng (khong nhi phan hoa)
+Class 3: 20 goc -> 100 anh nhị phân; IDs 201..300; Train=70, Val=15, Test=15
+Phat hien 14 nhom anh doc lap, kich thuoc: [4, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+Kiem tra nhom anh gan trung chi nam trong mot tap: DAT
+Class 4: da luu 100 anh MAU xoay rieng (khong nhi phan hoa)
+Class 4: 20 goc -> 100 anh nhị phân; IDs 301..400; Train=70, Val=15, Test=15
+Phat hien 17 nhom anh doc lap, kich thuoc: [3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+Kiem tra nhom anh gan trung chi nam trong mot tap: DAT
+Class 5: da luu 100 anh MAU xoay rieng (khong nhi phan hoa)
+Class 5: 20 goc -> 100 anh nhị phân; IDs 401..500; Train=70, Val=15, Test=15
+TONG ANH MAU AUGMENTATION: 500 | TONG ANH NHI PHAN: 500
+TONG KET: {'Train': 350, 'Validation': 75, 'Test': 75} ; N = 500
+KIEM TRA: moi anh goc va 5 phien ban xoay cung trong 1 tap: DAT
+Da luu ket_qua/00_nam_goc_xoay_theo_centroid.png
+Da luu ket_qua/10_anh_mau_500_augmentation.png
+
+================================================================================================
+BUOC 2 - SO SANH ANH GOC, MASK CU, MASK MOI, VUNG LOAI BO
+================================================================================================
+Mau da HSV/YCrCb/Lab + GrabCut 3 lan + loai bong xam + giu vung lien thong lon nhat
+Anh nhi phan: tay = 255 (trang), nen va bong = 0 (den)
+Class 1: cu 34.2% trang, moi 29.7% trang, 4.7% pixel mask thay doi
+Class 2: cu 27.3% trang, moi 23.3% trang, 3.9% pixel mask thay doi
+Class 3: cu 34.9% trang, moi 31.8% trang, 3.1% pixel mask thay doi
+Class 4: cu 37.8% trang, moi 33.8% trang, 4.0% pixel mask thay doi
+Class 5: cu 33.0% trang, moi 31.5% trang, 1.5% pixel mask thay doi
+Da luu 01_tien_xu_ly_va_xoay.png va 09_so_sanh_mask_cu_moi_15_anh.png
+
+================================================================================================
+BUOC 3 - TRICH HU, LOGARIT VA CHUAN HOA
+================================================================================================
+Hu1 = eta20 + eta02; Hu2 = (eta20-eta02)^2 + 4*eta11^2
+Hu3 = (eta30-3*eta12)^2 + (3*eta21-eta03)^2
+h_log = -sign(h)*log10(abs(h)+1e-10)
+MinMax = (h_log - min_train)/(max_train-min_train)
+Vi du CLASS 1, ID 001, tap TRAIN:
+Hu1 = 0.05909323 + 0.11398812 = 0.17308135
+Hu2 = (0.05909323-0.11398812)^2 + 4*(0.00385171)^2 = 0.00307279
+Hu1: log=-sign(+1.73081e-01)*log10(abs(+1.73081e-01)+1e-10)=0.761750
+     MinMax=(0.761750-0.375117)/(0.761806-0.375117)=0.999854
+Hu2: log=-sign(+3.07279e-03)*log10(abs(+3.07279e-03)+1e-10)=2.512467
+     MinMax=(2.512467-0.992717)/(2.512526-0.992717)=0.999961
+Hu3: log=-sign(+2.22849e-05)*log10(abs(+2.22849e-05)+1e-10)=4.651986
+     MinMax=(4.651986-1.556795)/(4.657457-1.556795)=0.998236
+Train: 350x7 | Validation: 75x7 | Test: 75x7 | fit scaler: Train
+Da luu ket_qua/du_lieu_500_ID_Hu.csv
+
+================================================================================================
+BUOC 3B - TRUC QUAN HOA HU1-HU2 VA HU1-HU2-HU3 (TRAIN)
+================================================================================================
+Da luu scatter 2D va 3D trong ket_qua/
+NHAN XET: Neu mau cac class de len nhau tren scatter, 2/3 Hu dau chua tach lop tot.
+
+================================================================================================
+BUOC 4 - TRAIN 8 CAU HINH: 7-H-5; H=7,8,9,10; LR=0.01,0.1
+================================================================================================
+Input=7, Hidden=7/8/9/10 (Sigmoid), Output=5 (Softmax), Loss=CCE
+Batch GD: Batch size N=350, epoch=200, W duoc khoi tao ngau nhien Glorot.
+Val chi forward+tinh CCE, TUYET DOI KHONG dung de cap nhat trong so
+Validation LOSS nho nhat -> chon checkpoint, KHONG dung test de chon model
+Moi cau hinh: epoch 1, 25, 50, 100, 150, 200.
+
+******** VI DU THE SO LAN TRUYEN THUAN + LAN TRUYEN NGUOC ********
+Batch N=350, X[0]=[9.9985402e-01 9.9996072e-01 9.9823583e-01 9.9876600e-01 3.1375252e-05
+ 3.4474192e-04 2.6972550e-05]
+Nhan class=1; one-hot=[1 0 0 0 0]
+Z1 = X @ W1 + b1, A1 = 1/(1+exp(-Z1))
+Z2 = A1 @ W2 + b2, Pk = exp(Z2k)/sum(exp(Z2j))
+Z1[0,0] = (0.999854)*(+0.028865) + (0.999961)*(+0.527140) + (0.998236)*(+0.643189) + (0.998766)*(+0.296792) + (0.000031)*(-0.519563) + (0.000345)*(+0.553196) + (0.000027)*(-0.247231) + (+0.000000) = +1.494627922
+A1[0,0] = 1/(1+exp(-(+1.494627922))) = 0.816771883
+Z2[0,0] = (0.81677)*(-0.11601) + (0.63102)*(-0.58268) + (0.36665)*(+0.60594) + (0.66855)*(-0.28386) + (0.36121)*(-0.44784) + (0.51330)*(+0.38156) + (0.68350)*(+0.51762) + (+0.00000) = -0.042154049
+P[0] softmax=[0.172250099 0.194305344 0.180953921 0.350082767 0.102407867]
+CCE mau 0=-ln(P_dung)=-ln(0.172250099)=1.758807792
+CCE ca batch = -1/350 * SUM_i SUM_k (y_ik ln p_ik) = 1.667004565
+dZ2 = (P-Y)/N
+dZ2[0,0]=(0.172250099-1)/350=-0.002364999716
+dW2=A1^T @ dZ2; db2=SUM(dZ2)
+dW2[0,0]=SUM_i A1[i,0]*dZ2[i,0]=-0.015172126449
+dZ1=(dZ2 @ W2^T)*A1*(1-A1); dW1=X^T @ dZ1
+dZ1[0,0]=-0.000024023604, dW1[0,0]=+0.005376205707
+W1_old[0,0]=+0.028864997964
+W1_new[0,0] = +0.028864997964 - (0.01)*(+0.005376205707) = +0.028811235907
+W2_new[0,0] = -0.116005213519 - (0.01)*(-0.015172126449) = -0.115853492255
+Toan bo 350 mau dong gop vao gradient, khong cap nhat theo tung mau.
+***************************************************************
+
+
+>>> ANN 7-7-5; learning rate eta=0.01; epochs=200
+  Epoch 001: Train CCE=1.66606, Val CCE=1.67126, Train Acc=20.00%, Val Acc=20.00%
+  Epoch 025: Train CCE=1.64730, Val CCE=1.65199, Train Acc=20.00%, Val Acc=20.00%
+  Epoch 050: Train CCE=1.63367, Val CCE=1.63793, Train Acc=20.00%, Val Acc=20.00%
+  Epoch 100: Train CCE=1.61713, Val CCE=1.62070, Train Acc=20.00%, Val Acc=20.00%
+  Epoch 150: Train CCE=1.60836, Val CCE=1.61141, Train Acc=20.00%, Val Acc=20.00%
+  Epoch 200: Train CCE=1.60345, Val CCE=1.60608, Train Acc=22.86%, Val Acc=26.67%
+KET THUC 7-7-5 eta=0.01: epoch tot nhat=200, Val CCE=1.606075423
+
+>>> ANN 7-7-5; learning rate eta=0.1; epochs=200
+  Epoch 001: Train CCE=1.65791, Val CCE=1.66290, Train Acc=20.00%, Val Acc=20.00%
+  Epoch 025: Train CCE=1.60030, Val CCE=1.60255, Train Acc=25.71%, Val Acc=20.00%
+  Epoch 050: Train CCE=1.59428, Val CCE=1.59514, Train Acc=28.29%, Val Acc=13.33%
+  Epoch 100: Train CCE=1.58603, Val CCE=1.58448, Train Acc=34.00%, Val Acc=20.00%
+  Epoch 150: Train CCE=1.57744, Val CCE=1.57358, Train Acc=38.29%, Val Acc=20.00%
+  Epoch 200: Train CCE=1.56828, Val CCE=1.56216, Train Acc=39.43%, Val Acc=26.67%
+KET THUC 7-7-5 eta=0.1: epoch tot nhat=200, Val CCE=1.562163721
+
+>>> ANN 7-8-5; learning rate eta=0.01; epochs=200
+  Epoch 001: Train CCE=1.67358, Val CCE=1.70423, Train Acc=20.00%, Val Acc=20.00%
+  Epoch 025: Train CCE=1.65545, Val CCE=1.68550, Train Acc=20.00%, Val Acc=20.00%
+  Epoch 050: Train CCE=1.64139, Val CCE=1.67090, Train Acc=20.00%, Val Acc=20.00%
+  Epoch 100: Train CCE=1.62305, Val CCE=1.65173, Train Acc=21.43%, Val Acc=20.00%
+  Epoch 150: Train CCE=1.61264, Val CCE=1.64069, Train Acc=25.43%, Val Acc=13.33%
+  Epoch 200: Train CCE=1.60659, Val CCE=1.63416, Train Acc=25.43%, Val Acc=6.67%
+KET THUC 7-8-5 eta=0.01: epoch tot nhat=200, Val CCE=1.634158540
+
+>>> ANN 7-8-5; learning rate eta=0.1; epochs=200
+  Epoch 001: Train CCE=1.66593, Val CCE=1.69634, Train Acc=20.00%, Val Acc=20.00%
+  Epoch 025: Train CCE=1.60268, Val CCE=1.62983, Train Acc=25.14%, Val Acc=0.00%
+  Epoch 050: Train CCE=1.59645, Val CCE=1.62245, Train Acc=27.71%, Val Acc=6.67%
+  Epoch 100: Train CCE=1.59055, Val CCE=1.61528, Train Acc=27.71%, Val Acc=13.33%
+  Epoch 150: Train CCE=1.58465, Val CCE=1.60831, Train Acc=33.43%, Val Acc=20.00%
+  Epoch 200: Train CCE=1.57847, Val CCE=1.60108, Train Acc=34.57%, Val Acc=20.00%
+KET THUC 7-8-5 eta=0.1: epoch tot nhat=200, Val CCE=1.601076640
+
+>>> ANN 7-9-5; learning rate eta=0.01; epochs=200
+  Epoch 001: Train CCE=1.60557, Val CCE=1.61027, Train Acc=31.43%, Val Acc=26.67%
+  Epoch 025: Train CCE=1.60085, Val CCE=1.60594, Train Acc=22.86%, Val Acc=6.67%
+  Epoch 050: Train CCE=1.59726, Val CCE=1.60266, Train Acc=22.86%, Val Acc=6.67%
+  Epoch 100: Train CCE=1.59267, Val CCE=1.59854, Train Acc=27.14%, Val Acc=6.67%
+  Epoch 150: Train CCE=1.59008, Val CCE=1.59624, Train Acc=28.57%, Val Acc=20.00%
+  Epoch 200: Train CCE=1.58848, Val CCE=1.59481, Train Acc=29.14%, Val Acc=20.00%
+KET THUC 7-9-5 eta=0.01: epoch tot nhat=200, Val CCE=1.594814313
+
+>>> ANN 7-9-5; learning rate eta=0.1; epochs=200
+  Epoch 001: Train CCE=1.60357, Val CCE=1.60843, Train Acc=24.00%, Val Acc=26.67%
+  Epoch 025: Train CCE=1.58733, Val CCE=1.59377, Train Acc=32.86%, Val Acc=20.00%
+  Epoch 050: Train CCE=1.58370, Val CCE=1.58996, Train Acc=35.71%, Val Acc=26.67%
+  Epoch 100: Train CCE=1.57696, Val CCE=1.58229, Train Acc=40.00%, Val Acc=26.67%
+  Epoch 150: Train CCE=1.56987, Val CCE=1.57431, Train Acc=40.00%, Val Acc=26.67%
+  Epoch 200: Train CCE=1.56232, Val CCE=1.56591, Train Acc=38.57%, Val Acc=26.67%
+KET THUC 7-9-5 eta=0.1: epoch tot nhat=200, Val CCE=1.565914392
+
+>>> ANN 7-10-5; learning rate eta=0.01; epochs=200
+  Epoch 001: Train CCE=1.74398, Val CCE=1.75061, Train Acc=20.00%, Val Acc=20.00%
+  Epoch 025: Train CCE=1.70066, Val CCE=1.70747, Train Acc=22.86%, Val Acc=20.00%
+  Epoch 050: Train CCE=1.67071, Val CCE=1.67758, Train Acc=22.57%, Val Acc=20.00%
+  Epoch 100: Train CCE=1.63786, Val CCE=1.64470, Train Acc=24.29%, Val Acc=20.00%
+  Epoch 150: Train CCE=1.62318, Val CCE=1.62989, Train Acc=27.14%, Val Acc=26.67%
+  Epoch 200: Train CCE=1.61628, Val CCE=1.62282, Train Acc=27.14%, Val Acc=26.67%
+KET THUC 7-10-5 eta=0.01: epoch tot nhat=200, Val CCE=1.622823172
+
+>>> ANN 7-10-5; learning rate eta=0.1; epochs=200
+  Epoch 001: Train CCE=1.72493, Val CCE=1.73165, Train Acc=22.86%, Val Acc=20.00%
+  Epoch 025: Train CCE=1.61245, Val CCE=1.61881, Train Acc=26.29%, Val Acc=26.67%
+  Epoch 050: Train CCE=1.60585, Val CCE=1.61116, Train Acc=33.14%, Val Acc=40.00%
+  Epoch 100: Train CCE=1.59595, Val CCE=1.59914, Train Acc=37.14%, Val Acc=40.00%
+  Epoch 150: Train CCE=1.58602, Val CCE=1.58708, Train Acc=34.29%, Val Acc=40.00%
+  Epoch 200: Train CCE=1.57587, Val CCE=1.57476, Train Acc=33.43%, Val Acc=40.00%
+KET THUC 7-10-5 eta=0.1: epoch tot nhat=200, Val CCE=1.574761456
+
+CHON THEO VALIDATION LOSS, KHONG THEO TEST:
+ANN 7-7-5; eta=0.1; epoch=200; Val CCE=1.562163721
+
+================================================================================================
+BUOC 4B - VE DO THI HUAN LUYEN VA SO SANH
+================================================================================================
+PNG: 04_so_sanh_8_do_thi_loss.png | 05_so_sanh_learning_rate.png | 06_loss_mo_hinh_tot_nhat.png
+Nhan xet dinh luong: train CCE=1.568279; val CCE=1.562164; chenh lech Val-Train=-0.006115
+5 class ngau nhien co CCE=-ln(1/5)=ln(5)=1.609438
+Neu loss gan ln(5) va accuracy thap => co dau hieu underfitting / dac trung chua du.
+Neu train loss giam manh nhung val tang => dau hieu overfitting.
+
+================================================================================================
+BUOC 5 - TEST SET (75 ANH) - DO LUONG CHI TIET
+================================================================================================
+Predict = argmax(softmax[0..4])
+Accuracy = (so du doan dung) / N_test
+Precision_i = TP_i/(TP_i+FP_i), Recall_i = TP_i/(TP_i+FN_i)
+F1_i = 2*Precision_i*Recall_i/(Precision_i+Recall_i)
+Macro = (tong diem 5 class)/5; denominator bang 0 -> metric=0
+Accuracy = 45/75 = 0.600000 = 60.00%
+Vi du C1 ID=006: nhan=1, du_doan=1, Softmax=[0.2432 0.1856 0.1956 0.1707 0.2049], DUNG
+Vi du C1 ID=015: nhan=1, du_doan=1, Softmax=[0.2309 0.1877 0.1971 0.1786 0.2057], DUNG
+Vi du C1 ID=017: nhan=1, du_doan=1, Softmax=[0.2309 0.1795 0.1818 0.195  0.2127], DUNG
+Class 1: TP=15, FP=5, FN=0; Precision=0.750, Recall=1.000, F1=0.857
+Vi du Class 1: Precision=15/(15+5)=0.7500; Recall=15/(15+0)=1.0000; F1=0.8571
+Class 2: TP=5, FP=0, FN=10; Precision=1.000, Recall=0.333, F1=0.500
+Class 3: TP=0, FP=10, FN=15; Precision=0.000, Recall=0.000, F1=0.000
+Class 4: TP=10, FP=10, FN=5; Precision=0.500, Recall=0.667, F1=0.571
+Class 5: TP=15, FP=5, FN=0; Precision=0.750, Recall=1.000, F1=0.857
+Macro: Precision=0.6000; Recall=0.6000; F1=0.5571
+MA TRAN NHAM LAN: moi hang la nhan THAT, moi cot la nhan DU DOAN
+[[15  0  0  0  0]
+ [ 0  5 10  0  0]
+ [ 5  0  0 10  0]
+ [ 0  0  0 10  5]
+ [ 0  0  0  0 15]]
+Da tao 07_confusion_matrix.png, 08_so_sanh_precision_recall_f1.png
+
+KET QUA: Test accuracy=60.00%, Macro-P=0.60000, Macro-R=0.60000, Macro-F1=0.55714
+
+KET QUA CUOI CUNG
+ANN 7-7-5, eta=0.1, checkpoint=200
+Test accuracy: 60.00%
+Ket qua hinh anh / CSV / nhat ky: ket_qua/
